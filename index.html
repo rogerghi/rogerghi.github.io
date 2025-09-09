@@ -8,21 +8,21 @@
   <h2>User OS Detection</h2>
   <p id="os">Detecting...</p>
 
-  <script>
-    function detectOS() {
-      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      const platform = navigator.platform.toLowerCase();
+<script>
+  function detectOS() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-      if (platform.includes("win")) return "Windows";
-      if (platform.includes("mac")) return "macOS";
-      if (platform.includes("linux")) return "Linux";
-      if (/android/i.test(userAgent)) return "Android";
-      if (/iPhone|iPad|iPod/i.test(userAgent)) return "iOS";
+    if (/windows nt/i.test(userAgent)) return "Windows";
+    if (/macintosh|mac os x/i.test(userAgent)) return "macOS";
+    if (/android/i.test(userAgent)) return "Android";
+    if (/iphone|ipad|ipod/i.test(userAgent)) return "iOS";
+    if (/linux/i.test(userAgent)) return "Linux";
 
-      return "Unknown OS";
-    }
+    return "Unknown OS";
+  }
 
-    document.getElementById("os").textContent = "You are using: " + detectOS();
-  </script>
+  document.getElementById("os").textContent = "You are using: " + detectOS();
+</script>
+
 </body>
 </html>
