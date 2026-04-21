@@ -1,28 +1,167 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Detect OS</title>
-</head>
-<body>
-  <h2>User OS Detection</h2>
-  <p id="os">Detecting...</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Floating Button with Iframe Popup</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-<script>
-  function detectOS() {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        min-height: 100vh;
+      }
 
-    if (/windows nt/i.test(userAgent)) return "Windows";
-    if (/macintosh|mac os x/i.test(userAgent)) return "macOS";
-    if (/android/i.test(userAgent)) return "Android";
-    if (/iphone|ipad|ipod/i.test(userAgent)) return "iOS";
-    if (/linux/i.test(userAgent)) return "Linux";
+      .page-content {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 48px 24px 120px;
+        color: #1f2937;
+        line-height: 1.6;
+      }
 
-    return "Unknown OS";
-  }
+      .floating-button {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        width: 60px;
+        height: 60px;
+        border: none;
+        border-radius: 999px;
+        background: #111827;
+        color: white;
+        font-size: 26px;
+        cursor: pointer;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+      }
 
-  document.getElementById("os").textContent = "You are using: " + detectOS();
-</script>
+      .floating-button:hover {
+        transform: scale(1.05);
+      }
 
-</body>
+      .popup {
+        position: fixed;
+        right: 24px;
+        bottom: 96px;
+        width: min(380px, calc(100vw - 32px));
+        height: 520px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        display: none;
+        flex-direction: column;
+        z-index: 1000;
+        border: 1px solid #e5e7eb;
+      }
+
+      .popup.open {
+        display: flex;
+      }
+
+      .popup-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        background: #111827;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .close-btn {
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        line-height: 1;
+      }
+
+      .popup iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        background: #fff;
+      }
+
+      @media (max-width: 480px) {
+        .popup {
+          right: 12px;
+          bottom: 84px;
+          width: calc(100vw - 24px);
+          height: 70vh;
+        }
+
+        .floating-button {
+          right: 12px;
+          bottom: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-content">
+      <h1>Floating Button + Iframe Popup</h1>
+      <p>
+        This example uses plain HTML, CSS, and vanilla JavaScript. Click the
+        floating button in the bottom-right corner to open a popup.
+      </p>
+      <p>
+        The popup content is loaded from an <code>iframe</code>, so you can
+        point it to another page, app, chatbot, form, or internal tool.
+      </p>
+    </div>
+
+    <div id="popup" class="popup" aria-hidden="true">
+      <div class="popup-header">
+        <span>Embedded Content</span>
+        <button id="closeBtn" class="close-btn" aria-label="Close popup">
+          ×
+        </button>
+      </div>
+      <iframe
+        id="popupFrame"
+        src="https://bigassistant.bigbox.ai/embed/majelis-ulama-indonesia"
+      ></iframe>
+    </div>
+
+    <button id="floatingButton" class="floating-button" aria-label="Open popup">
+      +
+    </button>
+
+    <script>
+      const floatingButton = document.getElementById("floatingButton");
+      const popup = document.getElementById("popup");
+      const closeBtn = document.getElementById("closeBtn");
+
+      function togglePopup() {
+        popup.classList.toggle("open");
+        const isOpen = popup.classList.contains("open");
+        popup.setAttribute("aria-hidden", String(!isOpen));
+        floatingButton.textContent = isOpen ? "−" : "+";
+      }
+
+      function closePopup() {
+        popup.classList.remove("open");
+        popup.setAttribute("aria-hidden", "true");
+        floatingButton.textContent = "+";
+      }
+
+      floatingButton.addEventListener("click", togglePopup);
+      closeBtn.addEventListener("click", closePopup);
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closePopup();
+        }
+      });
+    </script>
+  </body>
 </html>
